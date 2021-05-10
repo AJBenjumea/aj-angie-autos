@@ -45,12 +45,15 @@ public class AutosControllerTests {
 
     @Test
     void getAutoByVin() throws Exception {
-        when(autoDataService.getAutoByVin()).thenReturn(autoList.get(2));
+        when(autoDataService.getAutoByVin("123")).thenReturn(autoList.get(2));
 
         mockMvc.perform(get("/autos/123"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("vin").value("123"));
     }
+
+    @Test
+    void 
 }
 
 // Schema:

@@ -1,6 +1,7 @@
 package com.automobile.autodealer;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,5 +20,11 @@ public class AutosController {
     public List<Auto>  getAutos () {
         return autoDataService.getAutos();
     }
+
+    @GetMapping("/{vin}")
+    public Auto getAutoByVin(@PathVariable String vin) {
+        return autoDataService.getAutoByVin(vin);
+    }
+
 
 }

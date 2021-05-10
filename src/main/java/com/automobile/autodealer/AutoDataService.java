@@ -13,7 +13,12 @@ public class AutoDataService {
         return autoDataList;
     }
 
-    public Auto getAutoByVin() {
+    public Auto getAutoByVin(String vin) {
+        for(Auto auto : autoDataList) {
+            if (auto.getVin() == vin) {
+                return auto;
+            }
+        }
         return null;
     }
 }
