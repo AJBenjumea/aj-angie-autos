@@ -21,4 +21,8 @@ public class AutoDataService {
         }
         return null;
     }
+
+    public Auto addAuto(Auto auto) {
+        return auto;
+    }
 }
