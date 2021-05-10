@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
-public class autosControllerTests {
+public class AutosControllerTests {
     @Autowired
     MockMvc mockMvc;
 
@@ -30,17 +30,26 @@ public class autosControllerTests {
     void setUp() {
         autoList = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
-            autoList.add(new Auto());
+            autoList.add(new Auto("12" + i));
         }
     }
 
     @Test
-    void getAutos() throws Exception{
+    void getAutos() throws Exception {
         when(autoDataService.getAutos()).thenReturn(autoList);
 
         mockMvc.perform(get("/autos"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(10)));
+    }
+
+    @Test
+    void getAutoByVin() throws Exception {
+        when(autoDataService.getAutoByVin()).thenReturn(autoList.get(2));
+
+        mockMvc.perform(get("/autos/123"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("vin").value("123"));
     }
 }
 

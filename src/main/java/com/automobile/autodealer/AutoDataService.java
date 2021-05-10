@@ -12,4 +12,8 @@ public class AutoDataService {
     public List<Auto> getAutos() {
         return autoDataList;
     }
+
+    public Auto getAutoByVin() {
+        return null;
+    }
 }

@@ -10,6 +10,9 @@ public class Auto {
 
     public Auto() {
     }
+    public Auto(String vin) {
+        this.vin = vin;
+    }
 
     public int getYear() {
         return year;
