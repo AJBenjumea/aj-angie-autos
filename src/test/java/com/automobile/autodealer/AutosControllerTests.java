@@ -56,12 +56,13 @@ public class AutosControllerTests {
     }
 
     @Test
+//    need to refactor this test to incorporate year, make, model and consider the content type on line 67
     void addAuto() throws  Exception{
         Auto auto = new Auto("abc");
 
         when(autoDataService.addAuto(any(Auto.class))).thenReturn(auto);
 
-        mockMvc.perform(post("/autos/abc")
+        mockMvc.perform(post("/autos")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{\"vin\":\"abc\"}"))
                 .andExpect(status().isOk())
