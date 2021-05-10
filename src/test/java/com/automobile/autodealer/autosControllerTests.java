@@ -22,8 +22,9 @@ public class autosControllerTests {
     MockMvc mockMvc;
 
     @MockBean
-    List<Auto> autoList;
     AutoDataService autoDataService;
+
+    List<Auto> autoList;
 
     @BeforeEach
     void setUp() {
