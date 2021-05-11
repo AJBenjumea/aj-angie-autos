@@ -15,6 +15,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -143,6 +144,15 @@ public class AutosControllerTests {
                 .content("{\"message\":\"no way\"}"))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void deleteAuto_validVin_returnAccepted() throws Exception {
+
+        mockMvc.perform(delete("/api/autos/abc"))
+                .andExpect(status().isAccepted());
+        verify(autoDataService).deleteAuto(anyString());
+    }
+
 }
 
 // Schema:
@@ -165,12 +175,13 @@ public class AutosControllerTests {
 //      response
 //          200 - automobile added successfully
 //          400 - bad request
-// *****
 // PATCH: /autos/{vin}
 //  request body: only update owner and color
 //      response
 //          200 - automobile added successfully
+//          204 - invalid VIN
 //          400 - bad request
+// ******
 // DELETE: /autos/{vin}
 //      response
 //    ***   202 - automobile delete request accepted

@@ -38,10 +38,9 @@ public class AutosController {
          return autoDataService.getAutoByVin(vin) == null ?
                  ResponseEntity.noContent().build():
                  ResponseEntity.ok(autoDataService.updateAuto(vin , data.getColor(), data.getOwner()));
-
-
     }
 
+    // Start here!
 
     @ExceptionHandler()
     @ResponseStatus(HttpStatus.BAD_REQUEST)
