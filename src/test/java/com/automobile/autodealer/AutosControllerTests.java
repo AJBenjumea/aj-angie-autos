@@ -56,7 +56,6 @@ public class AutosControllerTests {
     }
 
     @Test
-//    need to refactor this test to incorporate year, make, model and consider the content type on line 67
     void addAuto() throws  Exception{
         Auto auto = new Auto(2014, "Acura", "Integra", "abc");
 
