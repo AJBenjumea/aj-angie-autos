@@ -14,6 +14,13 @@ public class Auto {
         this.vin = vin;
     }
 
+    public Auto( int year, String make, String model, String vin) {
+        this.year = year;
+        this.make = make;
+        this.model = model;
+        this.vin = vin;
+    }
+
     public int getYear() {
         return year;
     }

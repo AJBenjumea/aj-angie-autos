@@ -10,7 +10,8 @@ public class AutoDataService {
     List<Auto> autoDataList = new ArrayList<>();
 
     public List<Auto> getAutos() {
-        return autoDataList;
+//        return autoDataList;
+        return null;
     }
 
     public Auto getAutoByVin(String vin) {
@@ -23,6 +24,9 @@ public class AutoDataService {
     }
 
     public Auto addAuto(Auto auto) {
-        return auto;
+//        autoDataList.add(auto);
+//        return auto;
+        return null;
     }
+
 }

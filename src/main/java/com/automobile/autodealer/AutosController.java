@@ -25,6 +25,6 @@ public class AutosController {
 
     @PostMapping()
     public Auto addAuto(@RequestBody Auto auto) {
-        return
+        return autoDataService.addAuto(auto);
     }
 }
