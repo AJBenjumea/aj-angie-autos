@@ -1,5 +1,6 @@
 package com.automobile.autodealer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,6 +28,8 @@ public class AutosControllerTests {
 
     @MockBean
     AutoDataService autoDataService;
+
+    ObjectMapper mapper = new ObjectMapper();
 
     List<Auto> autoList;
 
@@ -55,29 +59,40 @@ public class AutosControllerTests {
     }
 
     @Test
-    void getAutoByVin() throws Exception {
+    void getAuto_withVin_returnsAuto() throws Exception {
         when(autoDataService.getAutoByVin("123")).thenReturn(autoList.get(2));
 
-        mockMvc.perform(get("/autos/123"))
+        mockMvc.perform(get("/api/autos/123"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("vin").value("123"));
     }
 
     @Test
-//    need to refactor this test to incorporate year, make, model and consider the content type on line 67
-    void addAuto() throws  Exception{
+    void addAuto_valid_returnsAuto() throws  Exception{
+        // Arrange
         Auto auto = new Auto(2014, "Acura", "Integra", "abc");
 
         when(autoDataService.addAuto(any(Auto.class))).thenReturn(auto);
-
-        mockMvc.perform(post("/autos")
+        // Act
+        mockMvc.perform(post("/api/autos")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content("{\"vin\":\"abc\", " +
-                            "\"year\":2014," +
-                            "\"make\":\"Acura\"," +
-                            "\"model\":\"Integra\"}"))
+                    .content(mapper.writeValueAsString(auto)))
+                //Assert
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("vin").value("abc"));
+
+    }
+
+    @Test
+    void addAuto_invalid_returnsAuto() throws Exception{
+        //Arrange
+        when(autoDataService.addAuto(any(Auto.class))).thenThrow(InvalidAutoException.class);
+        //Act
+        mockMvc.perform(post("/api/autos")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"message\":\"no way\"}"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
 
     }
 }
@@ -90,23 +105,25 @@ public class AutosControllerTests {
 // String owner
 // String vin
 // GET: /autos
-// responses
-// 200 - return a list of all autos (if any exist) as a JSON object has an automobiles key whose value is an array of all autos.
-// 204 - no autos exist
+//      responses
+//          200 - return a list of all autos (if any exist) as a JSON object has an automobiles key whose value is an array of all autos.
+//          204 - no autos exist
 // GET: /autos/{vin}
-// 200 - return an auto by its vin
-// 204 - not found
-//POST: /autos
-// request body - object same as schema
-// response
-// 200 - automobile added successfully
-// 400 - bad request
-//PATCH: /autos/{vin}
-// request body: only update owner and color
-// response
-// 200 - automobile added successfully
-// 400 - bad request
-//DELETE: /autos/{vin}
-// response
-// 202 - automobile delete request accepted
-// 204 - Vehicle not found
+//      responses
+//          200 - return an auto by its vin
+// *****    204 - not found
+// POST: /autos
+//  request body - object same as schema
+//      response
+//          200 - automobile added successfully
+//          400 - bad request
+// *****
+// PATCH: /autos/{vin}
+//  request body: only update owner and color
+//      response
+//          200 - automobile added successfully
+//          400 - bad request
+// DELETE: /autos/{vin}
+//      response
+//          202 - automobile delete request accepted
+//          204 - Vehicle not found

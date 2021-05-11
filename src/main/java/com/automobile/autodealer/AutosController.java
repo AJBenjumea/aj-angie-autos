@@ -1,5 +1,6 @@
 package com.automobile.autodealer;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,4 +29,10 @@ public class AutosController {
     public Auto addAuto(@RequestBody Auto auto) {
         return autoDataService.addAuto(auto);
     }
+
+    @ExceptionHandler()
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void invalidAutoExceptionHandler(InvalidAutoException e) {
+    }
+
 }
