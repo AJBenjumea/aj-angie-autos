@@ -1,19 +1,19 @@
+image: adoptopenjdk:11
+
 stages:
-  -build
-  -test
+  - build
+  - test
 
 build-autos:
-  image: adoptopnejdk:11
   stage: build
   script:
     - ./gradlew bootJar
   artifacts:
     paths:
-      - .build/libs/*.jar
+      - build/libs/*.jar
     expire_in: 30 days
 
 test:
-  needs: build-autos
   stage: test
   script:
     - ./gradlew test
