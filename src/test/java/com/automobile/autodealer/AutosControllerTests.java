@@ -14,9 +14,9 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -102,6 +102,47 @@ public class AutosControllerTests {
                 .andExpect(status().isBadRequest());
 
     }
+
+    @Test
+    void patchAuto_givenColorAndOwner_returnsUpdatedAuto() throws Exception {
+        Auto auto = new Auto(2014, "Acura", "Integra", "Red", "AJ", "abc");
+
+        when(autoDataService.updateAuto(anyString(), anyString(), anyString())).thenReturn(auto);
+        when(autoDataService.getAutoByVin(anyString())).thenReturn(auto);
+
+        mockMvc.perform(patch("/api/autos/abc")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"color\":\"Red\", \"owner\":\"AJ\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("color").value("Red"))
+                .andExpect(jsonPath("owner").value("AJ"));
+    }
+
+    @Test
+    void patchAuto_invalidVin_returnsNoContent() throws Exception {
+        Auto auto = new Auto(2014, "Acura", "Integra", "abc");
+
+        when(autoDataService.updateAuto(anyString(), anyString(), anyString())).thenReturn(auto);
+        when(autoDataService.getAutoByVin(anyString())).thenReturn(null);
+
+        mockMvc.perform(patch("/api/autos/abc")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"color\":\"Red\", \"owner\":\"AJ\"}"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void patchAuto_badRequest_returnsBadRequest() throws Exception {
+        Auto auto = new Auto(2014, "Acura", "Integra", "abc");
+
+        when(autoDataService.updateAuto(anyString(), anyString(), anyString())).thenReturn(auto);
+        when(autoDataService.getAutoByVin(anyString())).thenThrow(InvalidAutoException.class);
+
+        mockMvc.perform(patch("/api/autos/zzz")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"message\":\"no way\"}"))
+                .andExpect(status().isBadRequest());
+    }
 }
 
 // Schema:
@@ -118,7 +159,7 @@ public class AutosControllerTests {
 // GET: /autos/{vin}
 //      responses
 //          200 - return an auto by its vin
-// *****    204 - not found
+//          204 - not found
 // POST: /autos
 //  request body - object same as schema
 //      response
@@ -132,5 +173,5 @@ public class AutosControllerTests {
 //          400 - bad request
 // DELETE: /autos/{vin}
 //      response
-//          202 - automobile delete request accepted
+//    ***   202 - automobile delete request accepted
 //          204 - Vehicle not found

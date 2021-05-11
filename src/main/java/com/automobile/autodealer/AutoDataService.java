@@ -30,4 +30,7 @@ public class AutoDataService {
         return null;
     }
 
+    public Auto updateAuto(String vin, String color, String owner) {
+        return null;
+    }
 }

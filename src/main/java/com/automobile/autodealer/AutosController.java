@@ -21,14 +21,27 @@ public class AutosController {
     }
 
     @GetMapping("/{vin}")
-    public Auto getAutoByVin(@PathVariable String vin) {
-        return autoDataService.getAutoByVin(vin);
+    public ResponseEntity<Auto> getAutoByVin(@PathVariable String vin) {
+        return autoDataService.getAutoByVin(vin) == null ?
+                ResponseEntity.noContent().build() : ResponseEntity.ok(autoDataService.getAutoByVin(vin));
     }
 
     @PostMapping()
     public Auto addAuto(@RequestBody Auto auto) {
         return autoDataService.addAuto(auto);
     }
+
+    @PatchMapping("/{vin}")
+    public ResponseEntity<Auto> updateAutoByVin(@PathVariable String vin ,
+                                                @RequestBody UpdateAuto data) {
+        //return autoDataService.updateAuto(vin, data.getColor(), data.getOwner());
+         return autoDataService.getAutoByVin(vin) == null ?
+                 ResponseEntity.noContent().build():
+                 ResponseEntity.ok(autoDataService.updateAuto(vin , data.getColor(), data.getOwner()));
+
+
+    }
+
 
     @ExceptionHandler()
     @ResponseStatus(HttpStatus.BAD_REQUEST)
