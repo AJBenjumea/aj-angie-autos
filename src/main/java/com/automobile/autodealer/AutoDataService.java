@@ -8,8 +8,9 @@ import java.util.List;
 @Service
 public class AutoDataService {
     List<Auto> autoDataList = new ArrayList<>();
+    //Automobiles autoDataList = new Automobiles(new ArrayList<>());
 
-    public List<Auto> getAutos() {
+    public Automobiles getAutos() {
 //        return autoDataList;
         return null;
     }

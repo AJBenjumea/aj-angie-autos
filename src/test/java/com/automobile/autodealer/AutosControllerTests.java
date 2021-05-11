@@ -38,12 +38,20 @@ public class AutosControllerTests {
     }
 
     @Test
-    void getAutos() throws Exception {
-        when(autoDataService.getAutos()).thenReturn(autoList);
+    void getAutos_noParams_exists_returnsAutoList() throws Exception {
+        when(autoDataService.getAutos()).thenReturn(new Automobiles(autoList));
 
-        mockMvc.perform(get("/autos"))
+        mockMvc.perform(get("/api/autos"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(10)));
+                .andExpect(jsonPath("$.automobiles", hasSize(10)));
+    }
+
+    @Test
+    void getAutos_noParams_noneExist_returnsNoContent() throws Exception {
+        when(autoDataService.getAutos()).thenReturn(new Automobiles(new ArrayList<>()));
+
+        mockMvc.perform(get("/api/autos"))
+                .andExpect(status().isNoContent());
     }
 
     @Test
