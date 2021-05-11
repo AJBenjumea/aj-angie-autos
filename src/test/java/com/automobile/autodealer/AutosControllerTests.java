@@ -68,6 +68,13 @@ public class AutosControllerTests {
     }
 
     @Test
+    void getAuto_nonExistentVin_returnsNotFound() throws Exception {
+        when(autoDataService.getAutoByVin("doesNotExist")).thenReturn(null);
+        mockMvc.perform(get("/api/autos/doesNotExist"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
     void addAuto_valid_returnsAuto() throws  Exception{
         // Arrange
         Auto auto = new Auto(2014, "Acura", "Integra", "abc");
@@ -84,7 +91,7 @@ public class AutosControllerTests {
     }
 
     @Test
-    void addAuto_invalid_returnsAuto() throws Exception{
+    void addAuto_invalid_returnsNoContent() throws Exception{
         //Arrange
         when(autoDataService.addAuto(any(Auto.class))).thenThrow(InvalidAutoException.class);
         //Act
