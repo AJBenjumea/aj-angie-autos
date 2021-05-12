@@ -13,7 +13,6 @@ build-autos:
     expire_in: 30 days
 
 test:
-  needs: build-autos
   stage: test
   script:
     - ./gradlew test
