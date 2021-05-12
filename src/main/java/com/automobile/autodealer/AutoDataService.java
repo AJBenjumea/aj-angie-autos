@@ -18,13 +18,11 @@ public class AutoDataService {
     }
 
     public Auto getAutoByVin(String vin) {
-        return autosRepository.findByVinContains(vin);
+        return autosRepository.findByVinContains(vin).orElse(null);
     }
 
     public Auto addAuto(Auto auto) {
-//        autoDataList.add(auto);
-//        return auto;
-        return null;
+        return autosRepository.save(auto);
     }
 
     public Auto updateAuto(String vin, String color, String owner) {
