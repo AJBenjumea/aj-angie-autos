@@ -2,25 +2,27 @@ package com.automobile.autodealer;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class AutoDataService {
-    List<Auto> autoDataList = new ArrayList<>();
+    //List<Auto> autoDataList = new ArrayList<>();
     //Automobiles autoDataList = new Automobiles(new ArrayList<>());
 
+    AutosRepository autosRepository;
+
+    public AutoDataService(AutosRepository autosRepository) {
+        this.autosRepository = autosRepository;
+    }
+
     public Automobiles getAutos() {
-//        return autoDataList;
-        return null;
+        return new Automobiles(autosRepository.findAll());
     }
 
     public Auto getAutoByVin(String vin) {
-        for(Auto auto : autoDataList) {
-            if (auto.getVin() == vin) {
-                return auto;
-            }
-        }
+//        for(Auto auto : autoDataList) {
+////            if (auto.getVin() == vin) {
+////                return auto;
+////            }
+////        }
         return null;
     }
 
