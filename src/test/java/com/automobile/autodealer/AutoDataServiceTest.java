@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -43,7 +44,23 @@ class AutoDataServiceTest {
     }
 
     @Test
-    void addAuto() {
+    void getAutoByVin_whenNoneExist_returnsAuto() {
+        Auto auto = new Auto(2014, "Acura", "Integra", "abc");
+        when(autosRepository.findByVinContains(anyString())).thenReturn(null);
+
+        Auto foundAuto = autoDataService.getAutoByVin(auto.getVin());
+        assertThat(foundAuto).isNull();
+
+    }
+
+    @Test
+    void addAuto_valid_returnsAuto() {
+        Auto auto = new Auto(2014, "Acura", "Integra", "abc");
+        when(autosRepository.save(any(Auto.class))).thenReturn(auto);
+
+        Auto newAuto = autoDataService.addAuto(auto);
+        assertThat(newAuto).isNotNull();
+
     }
 
     @Test
