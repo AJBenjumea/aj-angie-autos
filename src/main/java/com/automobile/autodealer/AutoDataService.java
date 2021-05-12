@@ -18,12 +18,7 @@ public class AutoDataService {
     }
 
     public Auto getAutoByVin(String vin) {
-//        for(Auto auto : autoDataList) {
-////            if (auto.getVin() == vin) {
-////                return auto;
-////            }
-////        }
-        return null;
+        return autosRepository.findByVinContains(vin);
     }
 
     public Auto addAuto(Auto auto) {
