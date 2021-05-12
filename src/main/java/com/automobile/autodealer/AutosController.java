@@ -32,7 +32,7 @@ public class AutosController {
     }
 
     @PatchMapping("/{vin}")
-    public ResponseEntity<Auto> updateAutoByVin(@PathVariable String vin ,
+    public ResponseEntity<Auto> updateAutoByVin(@PathVariable String vin,
                                                 @RequestBody UpdateAuto data) {
         //return autoDataService.updateAuto(vin, data.getColor(), data.getOwner());
          return autoDataService.getAutoByVin(vin) == null ?
@@ -40,7 +40,16 @@ public class AutosController {
                  ResponseEntity.ok(autoDataService.updateAuto(vin , data.getColor(), data.getOwner()));
     }
 
-    // Start here!
+    @DeleteMapping("/{vin}")
+    public ResponseEntity deleteAuto(@PathVariable String vin) {
+        try {
+            autoDataService.deleteAuto(vin);
+        } catch (InvalidAutoException e) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.accepted().build();
+    }
 
     @ExceptionHandler()
     @ResponseStatus(HttpStatus.BAD_REQUEST)
