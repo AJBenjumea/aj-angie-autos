@@ -15,9 +15,15 @@ public class Auto {
     }
 
     public Auto( int year, String make, String model, String vin) {
+        this(year, make, model, null, null, vin);
+    }
+
+    public Auto(int year, String make, String model, String color, String owner, String vin) {
         this.year = year;
         this.make = make;
         this.model = model;
+        this.color = color;
+        this.owner = owner;
         this.vin = vin;
     }
 
