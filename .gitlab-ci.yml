@@ -3,6 +3,7 @@ image: adoptopenjdk:11
 stages:
   - build
   - test
+  - docker
 
 build-autos:
   stage: build
@@ -20,3 +21,11 @@ test:
   artifacts:
     paths:
       - build/test-results/test/TEST*.xml
+
+docker:
+  stage: docker
+  before_script:
+    - docker info
+  script:
+    - docker build -t auto-docker-image .
+    - docker run auto-docker-image
