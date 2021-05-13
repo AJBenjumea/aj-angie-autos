@@ -5,6 +5,9 @@ import java.util.List;
 public class Automobiles {
     private List<Auto> automobiles;
 
+    public Automobiles() {
+    }
+
     public Automobiles(List<Auto> automobiles) {
         this.automobiles = automobiles;
     }

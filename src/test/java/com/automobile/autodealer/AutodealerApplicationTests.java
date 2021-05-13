@@ -6,10 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -38,8 +42,7 @@ class AutodealerApplicationTests {
 					);
 			testAutos.add(auto);
 		}
-
-		autosRepository.saveAll(this.testAutos);
+		autosRepository.saveAll(testAutos);
 	}
 
 	@AfterEach
@@ -52,4 +55,37 @@ class AutodealerApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void getAutos_Exist_returnAutomobiles() {
+		ResponseEntity<Automobiles> response = restTemplate.getForEntity("/api/autos", Automobiles.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getBody()).isNotNull();
+		assertThat(response.getBody().isEmpty()).isFalse();
+	}
+
+	@Test
+	void getAutos_doesNotExist_returnNoContent() {
+		autosRepository.deleteAll();
+
+		ResponseEntity<Automobiles> response = restTemplate.getForEntity("/api/autos", Automobiles.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+		assertThat(response.getBody()).isNull();
+	}
+
+	@Test
+	void getAutos_byVin_exists_returnsAuto() {
+		Auto auto = new Auto(2019, "Lexus", "coolCar", "PINK", "Angie", "abc123");
+		autosRepository.save(auto);
+		ResponseEntity<Auto> response = restTemplate.getForEntity("/api/autos/" + auto.getVin(), Auto.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getBody()).isNotNull();
+		assertThat(response.getBody().getColor()).isEqualTo("PINK");
+	}
+
+	@Test
+	void getAutos_byVin_doesNotExists_returnsNoContent() {
+		ResponseEntity<Auto> response = restTemplate.getForEntity("/api/autos/5732942hjfk", Auto.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+		assertThat(response.getBody()).isNull();
+	}
 }
