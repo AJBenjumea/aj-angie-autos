@@ -24,8 +24,7 @@ test:
 
 docker:
   stage: docker
-  before_script:
-    - docker info
   script:
+    - docker info
     - docker build -t auto-docker-image .
     - docker run auto-docker-image
