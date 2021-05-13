@@ -6,6 +6,7 @@ stages:
   - docker
 
 build-autos:
+  image: adoptopenjdk:11
   stage: build
   script:
     - ./gradlew bootJar
@@ -15,6 +16,7 @@ build-autos:
     expire_in: 30 days
 
 test:
+  image: adoptopenjdk:11
   stage: test
   script:
     - ./gradlew test
@@ -23,8 +25,18 @@ test:
       - build/test-results/test/TEST*.xml
 
 docker:
+  image: docker:20
+  needs:
+    - build-autos
+    - test
   stage: docker
+  services:
+    - docker:dind
+  before_script:
+    - echo "$MY_NAME"
+    - echo $CI_BUILD_TOKEN | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
   script:
-    - docker info
-    - docker build -t auto-docker-image .
-    - docker run auto-docker-image
+    - docker build --pull -t "$CI_REGISTRY_IMAGE":"$CI_PIPELINE_IID" .
+    - docker push "$CI_REGISTRY_IMAGE":"$CI_PIPELINE_IID"
+    - docker tag "$CI_REGISTRY_IMAGE":"$CI_PIPELINE_IID" "$CI_REGISTRY_IMAGE":"latest"
+    - docker push "$CI_REGISTRY_IMAGE":"latest"
