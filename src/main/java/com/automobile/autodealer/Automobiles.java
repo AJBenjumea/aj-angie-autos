@@ -23,4 +23,8 @@ public class Automobiles {
                 "automobiles=" + automobiles +
                 '}';
     }
+
+    public boolean isEmpty() {
+        return automobiles.size() == 0;
+    }
 }

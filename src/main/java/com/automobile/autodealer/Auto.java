@@ -1,5 +1,6 @@
 package com.automobile.autodealer;
 
+
 public class Auto {
     private int year;
     private String make;
