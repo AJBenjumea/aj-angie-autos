@@ -1,7 +1,15 @@
 package com.automobile.autodealer;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "autos")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Auto {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private int year;
     private String make;
     private String model;
