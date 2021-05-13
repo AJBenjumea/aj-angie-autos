@@ -12,6 +12,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -73,10 +74,18 @@ class AutoDataServiceTest {
 
     @Test
     void updateAuto() {
-
+        Auto auto = new Auto(2014, "Acura", "Integra", "abc");
+        when(autosRepository.findByVinContains(anyString())).thenReturn(Optional.of(auto));
+        when(autosRepository.save(any(Auto.class))).thenReturn(auto);
+        Auto updatedAuto = autoDataService.updateAuto(auto.getVin(), "BLUE", "Angie");
+        assertThat(updatedAuto).isNotNull();
     }
 
     @Test
     void deleteAuto() {
+        Auto auto = new Auto(2014, "Acura", "Integra", "abc");
+        when(autosRepository.findByVinContains(anyString())).thenReturn(Optional.of(auto));
+        autoDataService.deleteAuto(anyString());
+        verify(autosRepository).delete(auto);
     }
 }
