@@ -40,7 +40,7 @@ class AutodealerApplicationTests {
 					"ABC" + String.valueOf(r.nextInt(50) % 5),
 					colors[r.nextInt(50) % 5],
 					"DEF" + String.valueOf(r.nextInt(50) % 5),
-					"VIN" + String.valueOf(r.nextInt(50) % 5)
+					"VIN" + i
 					);
 			testAutos.add(auto);
 		}
