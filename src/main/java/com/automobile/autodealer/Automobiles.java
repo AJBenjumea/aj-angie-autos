@@ -1,5 +1,7 @@
 package com.automobile.autodealer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 public class Automobiles {
@@ -27,6 +29,7 @@ public class Automobiles {
                 '}';
     }
 
+    @JsonIgnore
     public boolean isEmpty() {
         return automobiles.size() == 0;
     }

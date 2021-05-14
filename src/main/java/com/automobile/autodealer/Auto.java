@@ -15,6 +15,7 @@ public class Auto {
     private String model;
     private String color;
     private String owner;
+    @Column(unique = true)
     private String vin;
 
     public Auto() {
