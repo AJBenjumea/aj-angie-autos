@@ -4,7 +4,7 @@ stages:
   - build
   - test
   - docker
-  - deploy
+#  - deploy
 
 build-autos:
   image: adoptopenjdk:11
@@ -42,15 +42,15 @@ docker:
     - docker tag "$CI_REGISTRY_IMAGE":"$CI_PIPELINE_IID" "$CI_REGISTRY_IMAGE":"latest"
     - docker push "$CI_REGISTRY_IMAGE":"latest"
 
-production:
-  stage: deploy
-  image: ruby:latest
-  script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
-    - gem install dpl
-  # App name from prev step  Key from your heroku account
-    - dpl --provider=heroku --app=aj-simple-autos-api --api-key=$HEROKU_API_KEY
-  # Heroku will ONLY deploy from main or master branch!
-  only:
-    - master
+#production:
+#  stage: deploy
+#  image: ruby:latest
+#  script:
+#    - apt-get update -qy
+#    - apt-get install -y ruby-dev
+#    - gem install dpl
+#  # App name from prev step  Key from your heroku account
+#    - dpl --provider=heroku --app=aj-simple-autos-api --api-key=$HEROKU_API_KEY
+#  # Heroku will ONLY deploy from main or master branch!
+#  only:
+#    - master
