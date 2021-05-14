@@ -50,7 +50,7 @@ production:
     - apt-get install -y ruby-dev
     - gem install dpl
   # App name from prev step  Key from your heroku account
-    - dpl --provider=heroku --app=vw-autos-api --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=aj-simple-autos-api --api-key=$HEROKU_API_KEY
   # Heroku will ONLY deploy from main or master branch!
   only:
     - master
