@@ -13,19 +13,19 @@ spec:
         app: aj-simple-autos
     spec:
       containers:
-        - image: registry.gitlab.com/galv-vmw-apr-2021/2-simple-autos/aj-angie:latest
+        - image: registry.gitlab.com/ajbenjumea/aj-angie:latest
           name: aj-simple-autos
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
             - name: DB_HOST
-              value:
+              value: "$DB_HOST"
             - name: DB_NAME
-              value:
+              value: "$DB_NAME"
             - name: DB_USER
-              value:
+              value: "$DB_USER"
             - name: DB_PWD
-              value:
+              value: "$DB_PWD"
       imagePullSecrets: # Be sure the token name matches what you created on K8s
-        - name: deploy
+        - name: aj-deploy
