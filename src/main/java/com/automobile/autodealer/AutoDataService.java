@@ -6,9 +6,6 @@ import java.util.Optional;
 
 @Service
 public class AutoDataService {
-    //List<Auto> autoDataList = new ArrayList<>();
-    //Automobiles autoDataList = new Automobiles(new ArrayList<>());
-
     AutosRepository autosRepository;
 
     public AutoDataService(AutosRepository autosRepository) {

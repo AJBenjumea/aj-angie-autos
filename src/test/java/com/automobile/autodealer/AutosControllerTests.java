@@ -76,11 +76,9 @@ public class AutosControllerTests {
 
     @Test
     void addAuto_valid_returnsAuto() throws  Exception{
-        // Arrange
         Auto auto = new Auto(2014, "Acura", "Integra", "abc");
 
         when(autoDataService.addAuto(any(Auto.class))).thenReturn(auto);
-        // Act
         mockMvc.perform(post("/api/autos")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(auto)))
@@ -92,9 +90,7 @@ public class AutosControllerTests {
 
     @Test
     void addAuto_invalid_returnsNoContent() throws Exception{
-        //Arrange
         when(autoDataService.addAuto(any(Auto.class))).thenThrow(InvalidAutoException.class);
-        //Act
         mockMvc.perform(post("/api/autos")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{\"message\":\"no way\"}"))
@@ -160,36 +156,3 @@ public class AutosControllerTests {
     }
 
 }
-
-// change
-// Schema:
-// int year
-// String make
-// string model
-// String color
-// String owner
-// String vin
-// GET: /autos
-//      responses
-//          200 - return a list of all autos (if any exist) as a JSON object has an automobiles key whose value is an array of all autos.
-//          204 - no autos exist
-// GET: /autos/{vin}
-//      responses
-//          200 - return an auto by its vin
-//          204 - not found
-// POST: /autos
-//  request body - object same as schema
-//      response
-//          200 - automobile added successfully
-//          400 - bad request
-// PATCH: /autos/{vin}
-//  request body: only update owner and color
-//      response
-//          200 - automobile added successfully
-//          204 - invalid VIN
-//          400 - bad request
-// ******
-// DELETE: /autos/{vin}
-//      response
-//    ***   202 - automobile delete request accepted
-//          204 - Vehicle not found
